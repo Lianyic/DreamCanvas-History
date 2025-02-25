@@ -1,29 +1,23 @@
 import os
 import redis
+import pymysql
 from flask import Flask, render_template, jsonify, request, redirect, Blueprint
 from flask_cors import CORS
 from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
-
 load_dotenv()
-
 
 app = Flask(__name__, template_folder="templates", static_folder="static")
 app.secret_key = os.getenv("SECRET_KEY", "79515e01fd5fe2ccf7abaa36bbea4640")
 
-
 CORS(app, supports_credentials=True)
 
 
-DATABASE_URL = os.getenv(
-    "DATABASE_URL", 
-    "mysql+pymysql://adminuser:LeilaLily?!@dreamanalysis.mysql.database.azure.com/dream_analysis_db"
-).strip('"')
+DATABASE_URL = os.getenv("DATABASE_URL", "mysql+pymysql://adminuser:LeilaLily?!@dreamanalysis.mysql.database.azure.com/dream_analysis_db")
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
@@ -36,9 +30,7 @@ redis_client = redis.StrictRedis(
     decode_responses=True
 )
 
-
 bp = Blueprint("history", __name__)
-
 
 AUTH_SERVICE_URL = os.getenv("AUTH_SERVICE_URL", "http://dreamcanvas-auth.ukwest.azurecontainer.io:5000/")
 
@@ -54,13 +46,12 @@ class DreamRecord(db.Model):
 @bp.route("/history", methods=["GET"])
 def history_page():
     all_sessions = redis_client.keys("session:*")
-    print("🔹 Checking Redis sessions:", all_sessions)
 
     if not all_sessions:
         print("No active sessions, redirecting to login.")
         return redirect(AUTH_SERVICE_URL)
 
-    
+
     for session_key in all_sessions:
         username = session_key.split("session:")[-1]
         session_data = redis_client.get(session_key)
@@ -80,12 +71,12 @@ def get_history():
     if not all_sessions:
         return jsonify({"error": "Unauthorized access."}), 401
 
+
     for session_key in all_sessions:
         username = session_key.split("session:")[-1]
         session_data = redis_client.get(session_key)
 
         if session_data:
-            
             records = DreamRecord.query.filter_by(username=username).order_by(DreamRecord.created_at.desc()).limit(10).all()
             history_data = [
                 {
