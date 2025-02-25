@@ -51,6 +51,7 @@ jobs:
           --os-type Linux \
           --environment-variables \
             SECRET_KEY=${{ secrets.SECRET_KEY }} \
+            AUTH_SERVICE_URL=${{ secrets.AUTH_SERVICE_URL }} \
             DATABASE_URL=${{ secrets.DATABASE_URL }} \
             REDIS_HOST=${{ secrets.REDIS_HOST }} \
             REDIS_PORT=${{ secrets.REDIS_PORT }} \
