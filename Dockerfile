@@ -11,4 +11,4 @@ EXPOSE 5002
 ENV FLASK_APP=app.py
 ENV FLASK_ENV=production
 
-CMD ["python", "app.py"]
+CMD ["python", "app/app.py"]
