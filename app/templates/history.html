@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DreamCanvas - Dream History</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const backgrounds = [
+                "/static/images/background1.png",
+                "/static/images/background2.png",
+                "/static/images/background3.png"
+            ];
+            document.body.style.backgroundImage = `url(${backgrounds[Math.floor(Math.random() * backgrounds.length)]})`;
+
+            fetch("/history/data")
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        document.getElementById("history").innerHTML = `<p style="color:red;">${data.error}</p>`;
+                        return;
+                    }
+                    let historyHTML = "<h2>Your Dream History</h2>";
+                    data.forEach(record => {
+                        historyHTML += `
+                            <div class="result-box">
+                                <p><strong>Date:</strong> ${record.created_at}</p>
+                                <p><strong>Dream:</strong> ${record.dream_content}</p>
+                                <p><strong>Analysis:</strong> ${record.analysis_result}</p>
+                            </div>
+                        `;
+                    });
+                    document.getElementById("history").innerHTML = historyHTML;
+                })
+                .catch(error => {
+                    document.getElementById("history").innerHTML = `<p style="color:red;">Error: ${error.message}</p>`;
+                });
+        });
+    </script>
+</head>
+<body>
+    <div class="navbar">
+        <a href="/">Home</a>
+        <a href="/record">Record Dream</a>
+        <a href="/history">Dream History</a>
+    </div>
+
+    <div class="hero-text">
+        <h1>Your Dream History</h1>
+        <p>View your past dream analyses.</p>
+    </div>
+
+    <div class="container" id="history">
+        <p>Loading your dream history...</p>
+    </div>
+
+    <button onclick="window.location.href='/record'">Back to Record</button>
+
+    <footer>
+        <p>&copy; 2025 DreamCanvas</p>
+    </footer>
+</body>
+</html>
