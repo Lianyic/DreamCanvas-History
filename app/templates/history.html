@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -22,17 +22,17 @@
                     document.getElementById("history").innerHTML = `<p style="color:red;">No dream history available.</p>`;
                     return;
                 }
-                
+
                 const record = dreams[index];
                 document.getElementById("history").innerHTML = `
                     <h2>Your Dream History</h2>
                     <div class="result-box">
-                        <p><strong>Date:</strong> ${record.created_at}</p>
+                        <p><strong>Date:</strong> ${record.dream_date}</p>
+                        <p><strong>Title:</strong> ${record.dream_title}</p>
                         <p><strong>Dream:</strong> ${record.dream_content}</p>
                         <p><strong>Analysis:</strong> ${record.analysis_result}</p>
                     </div>
                 `;
-
 
                 document.getElementById("prev").disabled = index === 0;
                 document.getElementById("next").disabled = index === dreams.length - 1;
@@ -52,7 +52,7 @@
                 }
             }
 
-
+            // 获取梦境数据
             fetch("/history/data")
                 .then(response => response.json())
                 .then(data => {
@@ -67,7 +67,7 @@
                     document.getElementById("history").innerHTML = `<p style="color:red;">Error: ${error.message}</p>`;
                 });
 
-
+            // 绑定按钮点击事件
             window.prevDream = prevDream;
             window.nextDream = nextDream;
         });
@@ -97,7 +97,6 @@
     <button onclick="window.location.href='http://dreamcanvas-analysis.ukwest.azurecontainer.io:5001/record'">
         Back to Record
     </button>
-    
 
     <footer>
         <p>&copy; 2025 DreamCanvas</p>
