@@ -46,7 +46,7 @@ class DreamRecord(db.Model):
     dream_title = db.Column(db.String(255), nullable=False)
     dream_content = db.Column(db.Text, nullable=False)
     analysis_result = db.Column(db.Text, nullable=False)
-    dream_date = db.Column(db.Date, nullable=False)
+    dream_date = db.Column(db.Date, nullable=True)
 
 # ==========================
 # Routes
@@ -75,7 +75,6 @@ def history_page():
 
 @bp.route("/history/data", methods=["GET"])
 def get_history():
-
     all_sessions = redis_client.keys("session:*")
 
     if not all_sessions:
@@ -86,18 +85,21 @@ def get_history():
         session_data = redis_client.get(session_key)
 
         if session_data:
-            
-            records = DreamRecord.query.filter_by(username=username).order_by(DreamRecord.dream_date.desc()).limit(10).all()
-            history_data = [
-                {
-                    "dream_date": record.dream_date.strftime("%Y-%m-%d"),
-                    "dream_title": record.dream_title,
-                    "dream_content": record.dream_content,
-                    "analysis_result": record.analysis_result
-                }
-                for record in records
-            ]
-            return jsonify(history_data)
+            try:
+                records = DreamRecord.query.filter_by(username=username).order_by(DreamRecord.dream_date.desc()).limit(10).all()
+                history_data = [
+                    {
+                        "dream_date": record.dream_date.strftime("%Y-%m-%d") if record.dream_date else "Unknown",
+                        "dream_title": record.dream_title,
+                        "dream_content": record.dream_content,
+                        "analysis_result": record.analysis_result
+                    }
+                    for record in records
+                ]
+                return jsonify(history_data)
+            except Exception as e:
+                print(f"❌ Error fetching history: {str(e)}")
+                return jsonify({"error": "Internal Server Error"}), 500
 
     return jsonify({"error": "No records found."}), 404
 
