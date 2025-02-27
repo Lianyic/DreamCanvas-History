@@ -1,10 +1,11 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DreamCanvas - Dream History</title>
     <link rel="stylesheet" href="/static/style.css">
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const backgrounds = [
@@ -14,16 +15,16 @@
             ];
             document.body.style.backgroundImage = `url(${backgrounds[Math.floor(Math.random() * backgrounds.length)]})`;
 
+            window.dreams = [];
             let currentIndex = 0;
-            let dreams = [];
 
             function displayDream(index) {
-                if (dreams.length === 0) {
+                if (window.dreams.length === 0) {
                     document.getElementById("history").innerHTML = `<p style="color:red;">No dream history available.</p>`;
                     return;
                 }
 
-                const record = dreams[index];
+                const record = window.dreams[index];
                 document.getElementById("history").innerHTML = `
                     <h2>Your Dream History</h2>
                     <div class="result-box">
@@ -31,11 +32,12 @@
                         <p><strong>Title:</strong> ${record.dream_title}</p>
                         <p><strong>Dream:</strong> ${record.dream_content}</p>
                         <p><strong>Analysis:</strong> ${record.analysis_result}</p>
+                        ${record.image_url ? `<img src="${record.image_url}" alt="Dream Illustration" class="dream-image">` : ""}
                     </div>
                 `;
 
                 document.getElementById("prev").disabled = index === 0;
-                document.getElementById("next").disabled = index === dreams.length - 1;
+                document.getElementById("next").disabled = index === window.dreams.length - 1;
             }
 
             function prevDream() {
@@ -46,13 +48,12 @@
             }
 
             function nextDream() {
-                if (currentIndex < dreams.length - 1) {
+                if (currentIndex < window.dreams.length - 1) {
                     currentIndex++;
                     displayDream(currentIndex);
                 }
             }
 
-            // 获取梦境数据
             fetch("/history/data")
                 .then(response => response.json())
                 .then(data => {
@@ -60,18 +61,18 @@
                         document.getElementById("history").innerHTML = `<p style="color:red;">${data.error}</p>`;
                         return;
                     }
-                    dreams = data;
+                    window.dreams = data;
                     displayDream(currentIndex);
                 })
                 .catch(error => {
                     document.getElementById("history").innerHTML = `<p style="color:red;">Error: ${error.message}</p>`;
                 });
 
-            // 绑定按钮点击事件
             window.prevDream = prevDream;
             window.nextDream = nextDream;
         });
     </script>
+
 </head>
 <body>
     <div class="navbar">

@@ -92,7 +92,8 @@ def get_history():
                         "dream_date": record.dream_date.strftime("%Y-%m-%d") if record.dream_date else "Unknown",
                         "dream_title": record.dream_title,
                         "dream_content": record.dream_content,
-                        "analysis_result": record.analysis_result
+                        "analysis_result": record.analysis_result,
+                        "image_url": record.image_url if record.image_url else "Unknown"
                     }
                     for record in records
                 ]
