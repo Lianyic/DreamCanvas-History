@@ -16,3 +16,30 @@ cd DreamCanvas-History
 python -m venv dreamvenv
 dreamvenv\Scripts\activate
 ```
+
+## Step 4: Install Dependencies
+```bash
+pip install -r requirements.txt
+```
+
+## Step 5: Apply Database Migrations (Do not follow if you have changed the database configuration)
+### Before running the app, ensure the database is up to date:
+```bash
+flask db upgrade
+```
+
+## Step 6: Run the app
+```bash 
+python app/app.py 
+or 
+flask run
+```
+
+# Auto Deployed to Github, available at URL:
+## ACI web access URL
+http://dreamcanvas-history.ukwest.azurecontainer.io:5002/
+
+## Check database
+```
+mysql -h dreamcanvas-user-db.mysql.database.azure.com -u adminuser -p --ssl-mode=REQUIRED
+```
