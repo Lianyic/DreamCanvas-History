@@ -15,19 +15,24 @@
         <a href="http://dreamcanvas-history.ukwest.azurecontainer.io:5002/history">📜 Dream Journal</a>
     </div>
 
-    <!-- Title Section -->
+    <!-- Page Title -->
     <div class="hero-text">
-        <h1>View your past dream analyses.</h1>
+        <h1>Journey back through your dream world</h1>
     </div>
 
-    <div class="container" id="history">
+    <!-- Dream History Container -->
+    <div id="history">
         <p>Loading your dream history...</p>
     </div>
 
-    <!-- Navigation Buttons -->
-    <div class="buttons">
-        <button id="prev" onclick="prevDream()">Prev</button>
-        <button id="next" onclick="nextDream()">Next</button>
+    <div id="dream-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 id="modal-title"></h2>
+            <p id="modal-date"></p>
+            <p id="modal-dream"></p>
+            <p id="modal-analysis"></p>
+        </div>
     </div>
 
     <footer>
