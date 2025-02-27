@@ -47,6 +47,8 @@ class DreamRecord(db.Model):
     dream_content = db.Column(db.Text, nullable=False)
     analysis_result = db.Column(db.Text, nullable=False)
     dream_date = db.Column(db.Date, nullable=True)
+    image_url = db.Column(db.String(512), nullable=True)
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
 
 # ==========================
 # Routes
