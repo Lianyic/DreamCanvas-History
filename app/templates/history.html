@@ -1,106 +1,39 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DreamCanvas - Dream History</title>
     <link rel="stylesheet" href="/static/style.css">
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const backgrounds = [
-                "/static/images/background1.png",
-                "/static/images/background2.png",
-                "/static/images/background3.png"
-            ];
-            document.body.style.backgroundImage = `url(${backgrounds[Math.floor(Math.random() * backgrounds.length)]})`;
-
-            window.dreams = [];
-            let currentIndex = 0;
-
-            function displayDream(index) {
-                if (window.dreams.length === 0) {
-                    document.getElementById("history").innerHTML = `<p style="color:red;">No dream history available.</p>`;
-                    return;
-                }
-
-                const record = window.dreams[index];
-                document.getElementById("history").innerHTML = `
-                    <h2>Your Dream History</h2>
-                    <div class="result-box">
-                        <p><strong>Date:</strong> ${record.dream_date}</p>
-                        <p><strong>Title:</strong> ${record.dream_title}</p>
-                        <p><strong>Dream:</strong> ${record.dream_content}</p>
-                        <p><strong>Analysis:</strong> ${record.analysis_result}</p>
-                        ${record.image_url ? `<img src="${record.image_url}" alt="Dream Illustration" class="dream-image">` : ""}
-                    </div>
-                `;
-
-                document.getElementById("prev").disabled = index === 0;
-                document.getElementById("next").disabled = index === window.dreams.length - 1;
-            }
-
-            function prevDream() {
-                if (currentIndex > 0) {
-                    currentIndex--;
-                    displayDream(currentIndex);
-                }
-            }
-
-            function nextDream() {
-                if (currentIndex < window.dreams.length - 1) {
-                    currentIndex++;
-                    displayDream(currentIndex);
-                }
-            }
-
-            fetch("/history/data")
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        document.getElementById("history").innerHTML = `<p style="color:red;">${data.error}</p>`;
-                        return;
-                    }
-                    window.dreams = data;
-                    displayDream(currentIndex);
-                })
-                .catch(error => {
-                    document.getElementById("history").innerHTML = `<p style="color:red;">Error: ${error.message}</p>`;
-                });
-
-            window.prevDream = prevDream;
-            window.nextDream = nextDream;
-        });
-    </script>
-
 </head>
+
 <body>
+    <!-- Navigation Bar -->
     <div class="navbar">
-        <a href="/">Home</a>
-        <a href="http://dreamcanvas-analysis.ukwest.azurecontainer.io:5001/record">Record Dream</a>
-        <a href="/history">Dream History</a>
+        <a href="http://dreamcanvas-auth.ukwest.azurecontainer.io:5000/">🌌 Dream Portal</a>
+        <a href="http://dreamcanvas-analysis.ukwest.azurecontainer.io:5001/record">✍️ Capture a Dream</a>
+        <a href="http://dreamcanvas-history.ukwest.azurecontainer.io:5002/history">📜 Dream Journal</a>
     </div>
 
+    <!-- Title Section -->
     <div class="hero-text">
-        <h1>Your Dream History</h1>
-        <p>View your past dream analyses.</p>
+        <h1>View your past dream analyses.</h1>
     </div>
 
     <div class="container" id="history">
         <p>Loading your dream history...</p>
     </div>
 
+    <!-- Navigation Buttons -->
     <div class="buttons">
         <button id="prev" onclick="prevDream()">Prev</button>
         <button id="next" onclick="nextDream()">Next</button>
     </div>
 
-    <button onclick="window.location.href='http://dreamcanvas-analysis.ukwest.azurecontainer.io:5001/record'">
-        Back to Record
-    </button>
-
     <footer>
         <p>&copy; 2025 DreamCanvas</p>
     </footer>
+
+    <script src="/static/history.js"></script>
 </body>
 </html>
