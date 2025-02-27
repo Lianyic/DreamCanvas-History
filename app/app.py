@@ -48,7 +48,10 @@ class DreamRecord(db.Model):
     analysis_result = db.Column(db.Text, nullable=False)
     dream_date = db.Column(db.Date, nullable=True)
     image_url = db.Column(db.String(512), nullable=True)
-    created_at = db.Column(db.DateTime, server_default=db.func.now())
+    dream_type = db.Column(db.String(255), nullable=True)
+    characters = db.Column(db.String(255), nullable=True)
+    environment = db.Column(db.String(255), nullable=True)
+    emotion = db.Column(db.String(255), nullable=True)
 
 # ==========================
 # Routes
