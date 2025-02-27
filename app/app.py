@@ -91,7 +91,7 @@ def get_history():
 
         if session_data:
             try:
-                records = DreamRecord.query.filter_by(username=username).order_by(DreamRecord.dream_date.desc()).limit(10).all()
+                records = DreamRecord.query.filter_by(username=username).order_by(DreamRecord.id.desc()).limit(10).all()
                 history_data = [
                     {
                         "dream_date": record.dream_date.strftime("%Y-%m-%d") if record.dream_date else "Unknown",
