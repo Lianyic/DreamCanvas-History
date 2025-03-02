@@ -30,13 +30,15 @@ dreamvenv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### Step 5: Apply Database Migrations (Do not follow if you have changed the database configuration)
+### Step 5: Apply Database Migrations
+Do not follow if you have changed the database configuration
 Before running the app, ensure the database is up to date:
 ```bash
 flask db upgrade
 ```
 
-### Step 6: Run the app(default running at http://127.0.0.1:5002/history)
+### Step 6: Run the app
+default running at http://127.0.0.1:5002/history
 ```bash 
 python app/app.py 
 ```
