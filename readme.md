@@ -31,7 +31,7 @@ pip install -r requirements.txt
 ```
 
 ### Step 5: Apply Database Migrations
-Do not follow if you have changed the database configuration
+Do not follow if you have changed the database configuration  
 Before running the app, ensure the database is up to date:
 ```bash
 flask db upgrade
@@ -44,7 +44,8 @@ python app/app.py
 ```
 
 ## Access the Deployed Service
-DreamCanvas History Service is automatically deployed via GitHub Actions and is accessible at: http://dreamcanvas-history.ukwest.azurecontainer.io:5002/
+DreamCanvas History Service is automatically deployed via GitHub Actions and is accessible at:  
+http://dreamcanvas-history.ukwest.azurecontainer.io:5002/
 
 ### Check database
 ```
